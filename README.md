@@ -89,4 +89,126 @@ pip install .
 bash dl_compiler/benchmark_all.sh
 ```
 
-## 深度神经网络模型部署：以AI推理框架Tengine为例
+## 深度神经网络模型部署：以 AI 推理框架 Tengine 为例
+
+### 结果
+
+分类任务
+
+![classification_in](docs/classification_in.jpg)
+```bash
+tengine-lite library version: 1.5-dev
+
+model file : ./models/mobilenet.tmfile
+image file : ./images/cat.jpg
+img_h, img_w, scale[3], mean[3] : 224 224 , 0.017 0.017 0.017, 104.0 116.7 122.7
+Repeat 1 times, thread 1, avg time 210.81 ms, max_time 210.81 ms, min_time 210.81 ms
+--------------------------------------
+8.574153, 282
+7.880111, 277
+7.812575, 278
+7.286450, 263
+6.357493, 281
+--------------------------------------
+```
+
+人脸关键点检测任务
+
+![landmark_in](docs/landmark_in.jpg)
+![landmark_out](docs/landmark_out.jpg)
+```bash
+tengine-lite library version: 1.5-dev
+Repeat [1] min 74.974 ms, max 74.974 ms, avg 74.974 ms
+```
+
+人脸检测任务
+
+![retinaface_in](docs/retinaface_in.jpg)
+![retinaface_out](docs/retinaface_out.jpg)
+```bash
+tengine-lite library version: 1.5-dev
+img_h, img_w : 316, 474
+Repeat 1 times, thread 1, avg time 154.97 ms, max_time 154.97 ms, min_time 154.97 ms
+--------------------------------------
+detected face num: 4
+BOX 1.00:( 38.4053 , 86.142 ),( 46.3009 , 64.0174 )
+BOX 0.99:( 384.076 , 56.9844 ),( 76.968 , 83.9609 )
+BOX 0.99:( 169.196 , 87.1324 ),( 38.4133 , 46.8504 )
+BOX 0.98:( 290.004 , 104.453 ),( 37.6345 , 46.7777 )
+```
+
+目标检测任务
+
+![yolofastest_in](docs/yolofastest_in.jpg)
+![yolofastest_out](docs/yolofastest_out.jpg)
+```bash
+tengine-lite library version: 1.5-dev
+Repeat 1 times, thread 1, avg time 155.27 ms, max_time 155.27 ms, min_time 155.27 ms
+--------------------------------------
+Yolov3DetectionOutput init param[1]
+ 3:  93%, [ 454,   77,  684,  180], car
+17:  75%, [ 122,  221,  366,  516], dog
+ 2:  54%, [ 243,  187,  589,  422], bicycle
+ 3:  53%, [ 690,  117,  729,  155], car
+ 1:  53%, [  64,   73,  114,  118], person
+```
+
+![efficientdet_in](docs/efficientdet_in.jpg)
+![efficientdet_out](docs/efficientdet_out.jpg)
+```bash
+Image height not specified, use default 512
+Image width not specified, use default  512
+Scale value not specified, use default  0.017, 0.018, 0.017
+Mean value not specified, use default   123.7, 116.3, 103.5
+tengine-lite library version: 1.5-dev
+
+model file : ./models/efficientdet.tmfile
+image file : ./images/ssd_horse.jpg
+img_h, img_w, scale[3], mean[3] : 512 512 , 0.017 0.018 0.017, 123.7 116.3 103.5
+Repeat 1 times, thread 1, avg time 5432.70 ms, max_time 5432.70 ms, min_time 5432.70 ms
+--------------------------------------
+18:  85%, [ 215,   90,  425,  358], horse
+ 0:  71%, [ 429,  123,  449,  178], person
+ 0:  67%, [ 274,   16,  356,  228], person
+ 7:  56%, [   2,  105,  133,  197], truck
+18:  56%, [ 142,  203,  196,  346], horse
+ 0:  27%, [ 419,  136,  427,  150], person
+ 7:  25%, [ 467,  148,  498,  175], truck
+ 0:  25%, [ 412,  135,  420,  151], person
+63:  24%, [ 176,  134,  202,  158], potted plant
+```
+
+### Tengine 编译
+
+既然适合嵌入式，那么直接交叉编译全平台的Tengine，Codespaces启动！
+
+```bash
+git checkout tengine-lite
+sudo apt update
+sudo apt install cmake make g++ git g++-aarch64-linux-gnu g++-arm-linux-gnueabihf
+bash scripts/build.sh
+```
+
+`Raspberry Pi 4B + 64-bit Debian` 对应架构文件夹 `build-aarch64-linux-gnu`。
+
+```bash
+tar -czvf tengine-lite-build-aarch64-linux-gnu.tar.gz build-aarch64-linux-gnu
+# 上传到树莓派
+tar -xzvf tengine-lite-build-aarch64-linux-gnu.tar.gz
+```
+
+哦，要运行 https://tengine.readthedocs.io/zh-cn/latest/quick_start/c_demo.html 的 demo，权重文件得手动从Google Drive下载（总比龟速网盘快），放到 `./models`，`./images`、`./files`则完整下载。
+
+- 分类任务
+    - mobilenet.tmfile
+- 人脸关键点检测任务
+    - landmark.tmfile
+- 人脸检测任务
+    - retinaface.tmfile
+- 目标检测任务
+    - yolo-fastest-1.1.tmfile
+    - efficientdet.tmfile
+
+```bash
+bash demo.sh 2>&1 | tee demo.log
+```
