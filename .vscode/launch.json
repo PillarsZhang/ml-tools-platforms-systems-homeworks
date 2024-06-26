@@ -1,0 +1,15 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "benchmark: torch",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "benchmark.py",
+            "args": [
+                "--test-item=torch",
+            ],
+            "console": "integratedTerminal"
+        }
+    ]
+}
