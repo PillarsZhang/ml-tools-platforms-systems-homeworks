@@ -1,6 +1,8 @@
-# torch.compile 与 TVM 的性能对比
+# 机器学习工具、平台与系统作业
 
-## 结果
+## 深度神经网络编译器：以 TVM 与 PyTorch 2.0 为例
+
+### 结果
 
 |    | model_name                 | test_item     |   batch_size |   compile_time_s |   infer_time_mean_ms |
 |---:|:---------------------------|:--------------|-------------:|-----------------:|---------------------:|
@@ -26,14 +28,14 @@
 ![facebook/convnext-tiny-224](docs/facebook_convnext-tiny-224_infer_time.png)
 ![microsoft/resnet-50](docs/microsoft_resnet-50_infer_time.png)
 
-## 环境
+### 环境
 
 测试环境没有特殊要求，以下是我使用的环境：
 - pytorch 2.1.0
 - cuda 12.1.0
 
 测试环境也需要nvcc，可以直接安装完整工具链（但这样似乎在同一环境里编译TVM和测试更方便）
-```shell
+```bash
 conda install -c "nvidia/label/cuda-12.1.0" --override-channels cuda
 ```
 
@@ -41,7 +43,7 @@ conda install -c "nvidia/label/cuda-12.1.0" --override-channels cuda
 
 找不到新版本或支持较新的CUDA版本的TVM预编译包，但是从[源码编译](https://tvm.apache.org/docs/install/from_source.html)他是一个很痛苦的过程，这里记录一下编译的过程。
 
-```shell
+```bash
 # 应对中国大陆特殊网络环境，建议配置ssh.github.com或代理
 git clone --branch v0.16.0 --depth 1 git@github.com:apache/tvm.git
 cd tvm
@@ -79,10 +81,12 @@ cd python
 pip install .
 ```
 
-## 测试
+### 测试
 
 运行所有测试，注意修改变量以适配硬件环境
 
-```shell
-bash benchmark_all.sh
+```bash
+bash dl_compiler/benchmark_all.sh
 ```
+
+## 深度神经网络模型部署：以AI推理框架Tengine为例

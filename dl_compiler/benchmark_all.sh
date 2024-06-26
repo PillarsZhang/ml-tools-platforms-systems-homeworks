@@ -10,7 +10,7 @@ do
     do
         for batch_size in 1 4 16
         do
-            python benchmark.py --model_name $model_name --test_item $test_item --batch_size $batch_size
+            python dl_compiler/benchmark.py --model_name $model_name --test_item $test_item --batch_size $batch_size
         done
     done
 done
