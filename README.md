@@ -1,5 +1,8 @@
 # 机器学习工具、平台与系统作业
 
+- 深度神经网络编译器：以 TVM 与 PyTorch 2.0 为例
+- 深度神经网络模型部署：以 AI 推理框架 Tengine 为例
+
 ## 深度神经网络编译器：以 TVM 与 PyTorch 2.0 为例
 
 ### 结果
@@ -197,7 +200,7 @@ tar -czvf tengine-lite-build-aarch64-linux-gnu.tar.gz build-aarch64-linux-gnu
 tar -xzvf tengine-lite-build-aarch64-linux-gnu.tar.gz
 ```
 
-哦，要运行 https://tengine.readthedocs.io/zh-cn/latest/quick_start/c_demo.html 的 demo，权重文件得手动从Google Drive下载（总比龟速网盘快），放到 `./models`，`./images`、`./files`则完整下载。
+目标是运行 https://tengine.readthedocs.io/zh-cn/latest/quick_start/c_demo.html 的 demo，权重文件建议从Google Drive按需下载，放到 `./models`
 
 - 分类任务
     - mobilenet.tmfile
@@ -209,6 +212,9 @@ tar -xzvf tengine-lite-build-aarch64-linux-gnu.tar.gz
     - yolo-fastest-1.1.tmfile
     - efficientdet.tmfile
 
+完整下载网盘中的 `./images`、`./files` 文件夹
+
+复制脚本，运行测试
 ```bash
 bash demo.sh 2>&1 | tee demo.log
 ```
