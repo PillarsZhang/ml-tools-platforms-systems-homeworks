@@ -163,3 +163,4 @@ cython_debug/
 saved/
 temp/
 .pkl_memoize_py3/
+!dl_deployment/demo.log
